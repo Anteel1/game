@@ -78,7 +78,7 @@ class Sprite_Fighter extends Sprite{
         this.animationFrame();
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
         this.attackBox.position.y = this.position.y+this.attackBox.offset.y;
-        c.fillRect(this.attackBox.position.x,this.attackBox.position.y,this.attackBox.width,this.attackBox.height);
+       // c.fillRect(this.attackBox.position.x,this.attackBox.position.y,this.attackBox.width,this.attackBox.height);
         this.position.x +=this.velocity.x;
         this.position.y +=this.velocity.y;
         if(this.position.y +this.height+ this.velocity.y >= canvas.height -60){
