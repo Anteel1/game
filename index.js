@@ -34,6 +34,8 @@ const player = new Sprite_Fighter({
         jump:{imgSrc:'./img/Fantasy Warrior/Sprites/Jump.png',frameMax:3},
         fall:{imgSrc:'./img/Fantasy Warrior/Sprites/Fall.png',frameMax:3},
         attack3:{imgSrc:'./img/Fantasy Warrior/Sprites/Attack3.png',frameMax:8},
+        takeHit:{imgSrc:'./img/Fantasy Warrior/Sprites/Take hit.png',frameMax:3},
+        death:{imgSrc:'./img/Fantasy Warrior/Sprites/Death.png',frameMax:7},
     },
     attackBox:{
         offset:{
@@ -62,7 +64,9 @@ const enemy = new Sprite_Fighter({
       jump:{imgSrc:'./img/Medieval King Pack 2/Sprites/Jump.png',frameMax:2},
       fall:{imgSrc:'./img/Medieval King Pack 2/Sprites/Fall.png',frameMax:2},
       attack3:{imgSrc:'./img/Medieval King Pack 2/Sprites/Attack1.png',frameMax:4},
-  },
+      takeHit:{imgSrc:'./img/Medieval King Pack 2/Sprites/Take Hit - white silhouette.png',frameMax:4},
+      death:{imgSrc:'./img/Medieval King Pack 2/Sprites/Death.png',frameMax:6},
+    },
   attackBox:{
     offset:{
         x:-188,
@@ -147,8 +151,9 @@ if(enemy.velocity.y < 0){
      // xu li va cham && player hit
      if(rectangularCollision({rectangle1:player,rectangle2:enemy})
         && player.isAttacking){
+        enemy.takeHit();
         player.isAttacking = false;
-        enemy.health -=10;
+       
         document.querySelector('#mau_player2').style.width= enemy.health +'%';
        
      }  
@@ -158,8 +163,8 @@ if(enemy.velocity.y < 0){
      }
      if(rectangularCollision({rectangle1:enemy,rectangle2:player})
         && enemy.isAttacking){
+        player.takeHit();
         enemy.isAttacking = false;
-        player.health -=10;
         document.querySelector('#mau_player1').style.width= player.health +'%';
      }  
      //xu li danh hut
@@ -175,6 +180,7 @@ animate()
 
 // su kien key
 window.addEventListener('keydown',(event)=>{ // khi an nut
+    if(!player.dead){
     switch(event.key){
         case 'd' :
             keys.d.pressed = true;
@@ -190,21 +196,26 @@ window.addEventListener('keydown',(event)=>{ // khi an nut
         case 'j':
             player.attack();
             break;
+    }
+}
 //enemy keys
-        case 'ArrowRight' :
-            keys.ArrowRight.pressed = true;
-            enemy.lastkey='ArrowRight';
-            break;
-        case 'ArrowLeft' :
-            keys.ArrowLeft.pressed = true;
-            enemy.lastkey='ArrowLeft';
-            break;
-        case '2' :
-            enemy.velocity.y = -15;
-            break;
-         case '1' :
-            enemy.attack();
-            break;
+    if(!enemy.dead){
+        switch(event.key){
+            case 'ArrowRight' :
+                keys.ArrowRight.pressed = true;
+                enemy.lastkey='ArrowRight';
+                break;
+            case 'ArrowLeft' :
+                keys.ArrowLeft.pressed = true;
+                enemy.lastkey='ArrowLeft';
+                break;
+            case '2' :
+                enemy.velocity.y = -15;
+                break;
+             case '1' :
+                enemy.attack();
+                break;
+        }
     }
     console.log(event.key);
 })
